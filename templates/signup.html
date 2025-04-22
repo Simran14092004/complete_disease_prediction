@@ -1,0 +1,248 @@
+<!-- signup.html -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="templates/static/style.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #AFDDE5;
+            color: #003135;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            max-width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h2 {
+            color: #003135;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .social-login {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .social-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1rem;
+            border-radius: 5px;
+            margin-bottom: 0.75rem;
+            width: 100%;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 1rem;
+            color: white;
+        }
+
+        .social-button i {
+            margin-right: 0.75rem;
+            font-size: 1.2rem;
+        }
+
+        .google {
+            background-color: #DB4437;
+        }
+        .google:hover {
+            background-color: #C83225;
+        }
+
+        .github {
+            background-color: #24292e;
+        }
+        .github:hover {
+            background-color: #12171c;
+        }
+
+        .linkedin {
+            background-color: #0077B5;
+        }
+        .linkedin:hover {
+            background-color: #006293;
+        }
+
+
+        .form-divider {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            margin: 1rem 0;
+        }
+
+        .line {
+            flex: 1;
+            height: 1px;
+            background-color: #ddd;
+        }
+
+        .or {
+            margin: 0 0.75rem;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #003135;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #0FA4AF;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 5px;
+            background-color: #0FA4AF;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-button:hover {
+            background-color: #008080;
+        }
+
+        .login-link {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #555;
+            text-align: center;
+        }
+
+        .login-link a {
+            color: #0FA4AF;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 450px) {
+            .container {
+                padding: 1.5rem;
+            }
+            .social-button {
+                font-size: 0.9rem;
+            }
+            .form-group input {
+                font-size: 0.9rem;
+            }
+            .submit-button{
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Sign Up</h2>
+        <div class="social-login">
+            <button class="social-button google">
+                <i class="fab fa-google"></i> Sign up with Google
+            </button>
+            <button class="social-button github">
+                <i class="fab fa-github"></i> Sign up with GitHub
+            </button>
+            <button class="social-button linkedin">
+                <i class="fab fa-linkedin"></i> Sign up with LinkedIn
+            </button>
+        </div>
+        <div class="form-divider">
+            <div class="line"></div>
+            <span class="or">Or</span>
+            <div class="line"></div>
+        </div>
+        <form>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Your Name">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Your Email">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Your Password">
+            </div>
+            <button type="submit" class="submit-button">Sign Up</button>
+        </form>
+        <div class="login-link">
+            Already have an account? <a href="login.html">Login</a>
+        </div>
+    </div>
+
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="flashes">
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock %}
+    </main>
+    <script src="templates/static/Depscript.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</body>
+</html>

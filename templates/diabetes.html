@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chronic Disease Prediction</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="templates\static\chronicstyle.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Diabetes Disease Prediction</h1>
+        <p class="text-center">Fill in the required details to predict diabetes, heart disease, or Parkinson's disease.</p>
+
+        <!-- Tab Content -->
+        <div class="tab-content mt-4">
+            <!-- Diabetes Tab -->
+            <div class="tab-pane fade show active" id="diabetes" role="tabpanel">
+                <form action="/diabetes" method="POST">
+                    <div class="form-group">
+                        <label for="Pregnancies">Pregnancies</label>
+                        <input type="number" class="form-control" id="Pregnancies" name="Pregnancies" placeholder="Enter number of pregnancies" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Glucose">Glucose</label>
+                        <input type="number" class="form-control" id="Glucose" name="Glucose" placeholder="Enter glucose level" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="BloodPressure">Blood Pressure</label>
+                        <input type="number" class="form-control" id="BloodPressure" name="BloodPressure" placeholder="Enter blood pressure" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="SkinThickness">Skin Thickness</label>
+                        <input type="number" class="form-control" id="SkinThickness" name="SkinThickness" placeholder="Enter skin thickness" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Insulin">Insulin</label>
+                        <input type="number" class="form-control" id="Insulin" name="Insulin" placeholder="Enter insulin level" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="BMI">BMI</label>
+                        <input type="number" step="any" class="form-control" id="BMI" name="BMI" placeholder="Enter BMI" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="DiabetesPedigreeFunction">Diabetes Pedigree Function</label>
+                        <input type="number" step="any" class="form-control" id="DiabetesPedigreeFunction" name="DiabetesPedigreeFunction" placeholder="Enter diabetes pedigree function" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Age">Age</label>
+                        <input type="number" class="form-control" id="Age" name="Age" placeholder="Enter age" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Predict Diabetes</button>
+                </form>
+            </div>
+
+           
+
+           
+
+        <!-- Results Section -->
+        {% if prediction %}
+        <div class="mt-4">
+            <h2>Prediction Result</h2>
+            <p>{{ prediction }}</p>
+        </div>
+        {% endif %}
+
+        <!-- Recommendations Section -->
+        {% if recommendations %}
+        <div class="recommendations mt-4">
+            <h2>Recommendations</h2>
+            <ul>
+                {% for rec in recommendations %}
+                <li>{{ rec }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

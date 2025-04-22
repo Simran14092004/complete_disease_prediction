@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generic Disease Prediction</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="templates/static/generic.css">
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center" style="color: #003135;">Generic Disease Prediction</h2>
+        <p class="text-center">Select your symptoms from the list below to predict potential diseases.</p>
+        <form action="/generic" method="POST" style="border: 2px solid  #003135; padding: 20px; border-radius: 10px;">
+            <div class="symptoms-container">
+                <h3 style="color: #003135;">Select Your Symptoms</h3>
+                <div class="symptoms-list" id="symptomsList" style="background-color: #fff; padding: 10px; border-radius: 5px;">
+                    {% for symptom in all_symptoms %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="symptoms" value="{{ symptom }}" id="{{ symptom }}">
+                        <label class="form-check-label" for="{{ symptom }}">{{ symptom.replace('_', ' ').title() }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3" style="background-color: #d3011c; border: none;">Predict</button>
+        </form>
+
+        {% if prediction %}
+        <div id="predictionResult" class="mt-4" style="border: 2px solid #a10014; padding: 20px; border-radius: 10px;">
+            <h3 style="color: #0FA4AF;">Prediction: <span id="predictedDisease" style="color: #155724;">{{ prediction }}</span></h3>
+            <div id="recommendations">
+                <h4 style="color: #155724;">Recommendations:</h4>
+                <ul id="recommendationList">
+                    {% for rec in recommendations %}
+                    <li>{{ rec }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% if top_3_diseases %}
+            <div id="topDiseasesSection" class="mt-4">
+                <h4 style="color: #155724;">Top 3 Other Possible Diseases:</h4>
+                <ul id="topDiseasesList">
+                    {% for disease, probability in top_3_diseases %}
+                    <li>{{ disease }} - {{ probability | round(2) }}%</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% if get_flashed_messages() %}
+        <div id="errorDisplay" class="alert alert-danger mt-4">
+            {% for message in get_flashed_messages() %}
+            <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</body>
+</html>

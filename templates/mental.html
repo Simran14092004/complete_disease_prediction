@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Depression Prediction</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="templates/static/depstyle.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Student Depression Prediction</h2>
+        <form id="depressionForm" method="POST" action="{{ url_for('mental') }}">
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select id="gender" name="Gender" required>
+                    <option value="">Select Gender</option>
+                    <option value="0">Male</option>
+                    <option value="1">Female</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="age">Age</label>
+                <input type="number" id="age" name="Age" placeholder="Your Age" required>
+            </div>
+            <div class="form-group">
+                <label for="profession">Profession</label>
+                <input type="text" id="profession" name="Profession" placeholder="Your Profession" required>
+            </div>
+            <div class="form-group">
+                <label for="academic_pressure">Academic Pressure (0-10)</label>
+                <input type="number" id="academic_pressure" name="Academic Pressure" min="0" max="10" placeholder="Academic Pressure" required>
+            </div>
+            <div class="form-group">
+                <label for="work_pressure">Work Pressure (0-10)</label>
+                <input type="number" id="work_pressure" name="Work Pressure" min="0" max="10" placeholder="Work Pressure" required>
+            </div>
+            <div class="form-group">
+                <label for="cgpa">CGPA</label>
+                <input type="number" id="cgpa" name="CGPA" step="0.01" placeholder="Your CGPA" required>
+            </div>
+            <div class="form-group">
+                <label for="study_satisfaction">Study Satisfaction (0-5)</label>
+                <input type="number" id="study_satisfaction" name="Study Satisfaction" min="0" max="5" placeholder="Study Satisfaction" required>
+            </div>
+            <div class="form-group">
+                <label for="job_satisfaction">Job Satisfaction (0-5)</label>
+                <input type="number" id="job_satisfaction" name="Job Satisfaction" min="0" max="5" placeholder="Job Satisfaction" required>
+            </div>
+            <div class="form-group">
+                <label for="sleep_duration">Sleep Duration</label>
+                <select id="sleep_duration" name="Sleep Duration" required>
+                    <option value="">Select</option>
+                    <option value="Less than 5 hours">Less than 5 hours</option>
+                    <option value="5-6 hours">5-6 hours</option>
+                    <option value="7-8 hours">7-8 hours</option>
+                    <option value="More than 8 hours">More than 8 hours</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="dietary_habits">Dietary Habits</label>
+                <select id="dietary_habits" name="Dietary Habits" required>
+                    <option value="">Select</option>
+                    <option value="Unhealthy">Unhealthy</option>
+                    <option value="Moderate">Moderate</option>
+                    <option value="Healthy">Healthy</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="degree">Degree</label>
+                <input type="text" id="degree" name="Degree" placeholder="Your Degree" required>
+            </div>
+            <div class="form-group">
+                <label for="suicidal_thoughts">Have you ever had suicidal thoughts?</label>
+                <select id="suicidal_thoughts" name="Have you ever had suicidal thoughts ?" required>
+                    <option value="">Select</option>
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="work_study_hours">Work/Study Hours</label>
+                <input type="number" id="work_study_hours" name="Work/Study Hours" placeholder="Work/Study Hours" required>
+            </div>
+            <div class="form-group">
+                <label for="financial_stress">Financial Stress (0-10)</label>
+                <input type="number" id="financial_stress" name="Financial Stress" min="0" max="10" placeholder="Financial Stress" required>
+            </div>
+            <div class="form-group">
+                <label for="family_history">Family History of Mental Illness</label>
+                <select id="family_history" name="Family History of Mental Illness" required>
+                    <option value="">Select</option>
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+            <button type="submit" class="submit-button">Predict</button>
+        </form>
+
+        {% if prediction %}
+        <div id="results">
+            <h3>Prediction:</h3>
+            <p>{{ prediction }}</p>
+        </div>
+        {% endif %}
+
+        {% if recommendations %}
+        <div class="recommendations">
+            <h3>Recommendations:</h3>
+            <ul>
+                {% for recommendation in recommendations %}
+                <li>{{ recommendation }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

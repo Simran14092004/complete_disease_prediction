@@ -1,0 +1,268 @@
+<!-- index.html -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disease Prediction Platform</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="templates/static/style.css"> 
+</head>
+<body>
+    <header class="navbar">
+        <div class="menu-container">
+            <!-- Hamburger Menu Icon -->
+            <div class="hamburger-menu" id="menuToggle">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+    
+            <!-- Navigation Menu -->
+            <nav class="hidden" id="menuNav">
+                <ul>
+                    <li><a href="#disease-prediction">Disease Prediction</a></li>
+                    <li><a href="#articles">Articles</a></li>
+                    <li><a href="#courses">Courses</a></li>
+                    <li><a href="#about">About</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+         <!-- Welcome Section -->
+    <section class="welcome-section">
+        <div class="welcome-content">
+            <img src="templates/static/images/logo_gen.jpeg" alt="HealthSync Logo" class="logo">
+            <h1>Welcome to HealthSync</h1>
+            <p>
+                A place where disease prediction is made easy, free of cost. Gain knowledge about emergency situations, 
+                explore engaging articles, and view graphical representations of the rising numbers of diseases caused 
+                by environmental disasters such as poor air quality, pollution, and more.
+            </p>
+        </div>
+    </section>
+
+    <main>
+        <section id="disease-prediction" class="section">
+            <h2>Explore Disease Predictions</h2>
+            <div class="slider-container disease-slider">
+                <div class="slider-wrapper">
+                    <div class="disease-box" onclick="window.location='/diabetes'">
+                        <div class="box-image">
+                            <img src="templates\static\images\diabetes.jpg" alt="Diabetes">
+                        </div>
+                        <div class="box-description">
+                            <h3>Diabetes</h3>
+                            <p>Learn about diabetes and its prediction.</p>
+                        </div>
+                    </div>
+                    <div class="disease-box" onclick="window.location='/parkinson'">
+                        <div class="box-image">
+                            <img src="templates\static\images\6.jpg" alt="Parkinson's">
+                        </div>
+                        <div class="box-description">
+                            <h3>Parkinson's</h3>
+                            <p>Learn about Parkinson's disease.</p>
+                        </div>
+                    </div>
+                    <div class="disease-box" onclick="window.location='/heart'">
+                        <div class="box-image">
+                            <img src="templates\static\images\2.jpg" alt="Heart Disease">
+                        </div>
+                        <div class="box-description">
+                            <h3>Heart Disease</h3>
+                            <p>Information on heart disease.</p>
+                        </div>
+                    </div>
+                    <div class="disease-box" onclick="window.location='/mental'">
+                        <div class="box-image">
+                            <img src="templates\static\images\3.jpg" alt="Depression">
+                        </div>
+                        <div class="box-description">
+                            <h3>Depression</h3>
+                            <p>Learn about mental depression.</p>
+                        </div>
+                    </div>
+                     <div class="disease-box" onclick="window.location='/generic'">
+                        <div class="box-image">
+                            <img src="templates\static\images\5.jpg" alt="Generic Disease">
+                        </div>
+                        <div class="box-description">
+                            <h3>Generic Disease</h3>
+                            <p>Learn about various generic diseases.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="articles" class="section">
+            <h2>Featured Articles</h2>
+            <div class="slider-container article-slider">
+                <div class="slider-wrapper">
+                    <div class="article-box" onclick="window.open('https://www.mentalhealth.org/get-help/immediate-help', '_blank')">
+                        <div class="box-image">
+                            <img src="templates\static\images\5.jpg" alt="Understanding Depression">
+                        </div>
+                        <div class="box-description">
+                            <h3>Understanding Depression</h3>
+                            <p>Learn about the causes and symptoms of depression.</p>
+                        </div>
+                    </div>
+                    <div class="article-box" onclick="window.open('https://www.heart.org/en/health-topics/consumer-healthcare/what-is-cardiovascular-disease/how-to-help-prevent-heart-disease-at-any-age', '_blank')">
+                        <div class="box-image">
+                            <img src="templates\static\images\6.jpg" alt="Heart Health Tips">
+                        </div>
+                        <div class="box-description">
+                            <h3>Heart Health Tips</h3>
+                            <p>Essential tips for maintaining a healthy heart.</p>
+                        </div>
+                    </div>
+                    <div class="article-box" onclick="window.open('https://www.niddk.nih.gov/health-information/diabetes/overview/managing-diabetes', '_blank')">
+                        <div class="box-image">
+                            <img src="templates\static\images\diabetes.jpg" alt="Managing Diabetes">
+                        </div>
+                        <div class="box-description">
+                            <h3>Managing Diabetes</h3>
+                            <p>Effective strategies for managing diabetes.</p>
+                        </div>
+                    </div>
+                    <div class="article-box" onclick="window.open('https://www.parkinson.org/', '_blank')">
+                        <div class="box-image">
+                            <img src="templates\static\images\7.jpg" alt="Parkinson's Disease">
+                        </div>
+                        <div class="box-description">
+                            <h3>Parkinson's Disease</h3>
+                            <p>Information and resources about Parkinson's.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="courses" class="section">
+            <h2>Free Courses</h2>
+            <div class="slider-container course-slider">
+                <div class="slider-wrapper">
+                     <div class="course-box" onclick="window.open('https://www.mentalhealth.org/get-help/immediate-help', '_blank')">
+                        <div class="box-image">
+                            <img src="templates\static\images\1.jpg" alt="Mental Health First Aid">
+                        </div>
+                        <div class="box-description">
+                            <h3>Mental Health First Aid</h3>
+                            <p>Learn to provide initial support during a mental health crisis.</p>
+                        </div>
+                    </div>
+                    <div class="course-box" onclick="window.open('https://www.heart.org/en/health-topics/consumer-healthcare/what-is-cardiovascular-disease/how-to-help-prevent-heart-disease-at-any-age', '_blank')">
+                        <div class="box-image">
+                            <img src="templates\static\images\2.jpg" alt="Heart Disease Prevention">
+                        </div>
+                        <div class="box-description">
+                            <h3>Heart Disease Prevention</h3>
+                            <p>Learn about preventing heart disease.</p>
+                        </div>
+                    </div>
+                    <div class="course-box" onclick="window.open('https://www.niddk.nih.gov/health-information/diabetes/overview/managing-diabetes', '_blank')">
+                        <div class="box-image">
+                            <img src="templates\static\images\diabetes.jpg" alt="Diabetes Management">
+                        </div>
+                        <div class="box-description">
+                            <h3>Diabetes Management</h3>
+                            <p>Learn how to manage your diabetes effectively.</p>
+                        </div>
+                    </div>
+                    <div class="course-box" onclick="window.open('https://www.parkinson.org/', '_blank')">
+                        <div class="box-image">
+                            <img src="templates\static\images\4.jpg" alt="Living with Parkinson's">
+                        </div>
+                        <div class="box-description">
+                            <h3>Living with Parkinson's</h3>
+                            <p>Resources for individuals and families facing Parkinson's.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="trending-diseases" class="section">
+            <h2>Trending Diseases</h2>
+            <div class="slider-container trending-slider">
+                <div class="slider-wrapper">
+                    <div class="disease-box" onclick="window.location='/charts/heart-disease'">
+                        <div class="box-image">
+                            <img src="templates\static\images\4.jpg" alt="Heart Disease">
+                        </div>
+                        <div class="box-description">
+                            <h3>Heart Disease</h3>
+                            <p>Explore increasing cases of heart disease in India.</p>
+                        </div>
+                    </div>
+                    <div class="disease-box" onclick="window.location='/charts/cancer'">
+                        <div class="box-image">
+                            <img src="templates\static\images\5.jpg" alt="Cancer">
+                        </div>
+                        <div class="box-description">
+                            <h3>Cancer</h3>
+                            <p>Learn about trends in cancer cases worldwide.</p>
+                        </div>
+                    </div>
+                    <!-- Add more diseases as needed -->
+                </div>
+            </div>
+        </section>
+
+
+        <section id="about" class="section about-section">
+            <h2>About Us</h2>
+            <div class="vision-mission">
+                <h3>Our Vision</h3>
+                <p>To empower individuals with accessible and insightful disease prediction tools, fostering proactive health management and well-being.</p>
+                <h3>Our Mission</h3>
+                <p>To develop and deploy accurate, user-friendly disease prediction models and provide valuable health-related resources, contributing to a healthier future.</p>
+            </div>
+            <div class="future-goals">
+                <h3>Future Integration & Goals</h3>
+                <ul>
+                    <li>Integration of more advanced AI models for higher accuracy.</li>
+                    <li>Personalized health recommendations based on prediction results.</li>
+                    <li>Expansion of the platform to include more disease categories.</li>
+                    <li>Community forum for users to share experiences and support.</li>
+                    <li>Partnerships with healthcare professionals and organizations.</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="flashes">
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock %}
+    </main>
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="/signup">Sign Up</a> |
+            <a href="/login">Login</a> |
+            <a href="/contact">Contact Us</a>
+        </div>
+    </footer>
+
+    <script src="templates/static/script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    
+</body>
+</html>

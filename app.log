@@ -1,0 +1,66 @@
+2025-04-22 15:33:58,971 [INFO] - Diabetes model loaded successfully.
+2025-04-22 15:33:59,080 [INFO] - Parkinson's model loaded successfully.
+2025-04-22 15:33:59,105 [INFO] - Heart disease model loaded successfully.
+2025-04-22 15:33:59,143 [ERROR] - Error loading depression model/encoder: [Errno 2] No such file or directory: 'D:\\python_practice\\complete_disease_prediction_app\\Trained_sav_models\\trained_depression_model.sav'
+2025-04-22 15:33:59,143 [ERROR] - Error loading generic model/encoder: [Errno 2] No such file or directory: 'D:\\python_practice\\complete_disease_prediction_app\\Trained_sav_models\\trained_generic_model.sav'
+2025-04-22 15:34:02,161 [INFO] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-04-22 15:34:02,161 [INFO] - [33mPress CTRL+C to quit[0m
+2025-04-22 15:34:02,237 [INFO] -  * Restarting with stat
+2025-04-22 15:34:05,377 [INFO] - Diabetes model loaded successfully.
+2025-04-22 15:34:05,377 [INFO] - Parkinson's model loaded successfully.
+2025-04-22 15:34:05,377 [INFO] - Heart disease model loaded successfully.
+2025-04-22 15:34:05,377 [ERROR] - Error loading depression model/encoder: [Errno 2] No such file or directory: 'D:\\python_practice\\complete_disease_prediction_app\\Trained_sav_models\\trained_depression_model.sav'
+2025-04-22 15:34:05,387 [ERROR] - Error loading generic model/encoder: [Errno 2] No such file or directory: 'D:\\python_practice\\complete_disease_prediction_app\\Trained_sav_models\\trained_generic_model.sav'
+2025-04-22 15:34:06,504 [WARNING] -  * Debugger is active!
+2025-04-22 15:34:07,094 [INFO] -  * Debugger PIN: 105-493-473
+2025-04-22 15:34:27,624 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:34:27] "GET / HTTP/1.1" 200 -
+2025-04-22 15:34:32,910 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:34:32] "[36mGET /templates/static/style.css HTTP/1.1[0m" 304 -
+2025-04-22 15:34:32,910 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:34:32] "[36mGET /templates/static/images/logo_gen.jpeg HTTP/1.1[0m" 304 -
+2025-04-22 15:34:32,983 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:34:32] "[36mGET /templates/static/images/diabetes.jpg HTTP/1.1[0m" 304 -
+2025-04-22 15:34:33,000 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:34:33] "[36mGET /templates/static/script.js HTTP/1.1[0m" 304 -
+2025-04-22 15:34:33,149 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:34:33] "[36mGET /templates/static/images/6.jpg HTTP/1.1[0m" 304 -
+2025-04-22 15:34:33,149 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:34:33] "[36mGET /templates/static/images/2.jpg HTTP/1.1[0m" 304 -
+2025-04-22 15:34:33,149 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:34:33] "[36mGET /templates/static/images/3.jpg HTTP/1.1[0m" 304 -
+2025-04-22 15:34:33,362 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:34:33] "[36mGET /templates/static/images/5.jpg HTTP/1.1[0m" 304 -
+2025-04-22 15:34:33,418 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:34:33] "[36mGET /templates/static/images/7.jpg HTTP/1.1[0m" 304 -
+2025-04-22 15:34:33,813 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:34:33] "[36mGET /templates/static/images/1.jpg HTTP/1.1[0m" 304 -
+2025-04-22 15:34:33,884 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:34:33] "[36mGET /templates/static/images/4.jpg HTTP/1.1[0m" 304 -
+2025-04-22 15:34:49,628 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:34:49] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-04-22 15:35:30,792 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:35:30] "GET /heart HTTP/1.1" 200 -
+2025-04-22 15:35:30,992 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:35:30] "[36mGET /templates/static/chronicstyle.css HTTP/1.1[0m" 304 -
+2025-04-22 15:35:45,615 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:35:45] "GET /diabetes HTTP/1.1" 200 -
+2025-04-22 15:35:45,615 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:35:45] "GET /diabetes HTTP/1.1" 200 -
+2025-04-22 15:35:45,615 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:35:45] "GET /diabetes HTTP/1.1" 200 -
+2025-04-22 15:35:45,633 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:35:45] "GET /diabetes HTTP/1.1" 200 -
+2025-04-22 15:35:45,690 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:35:45] "[36mGET /templates/static/chronicstyle.css HTTP/1.1[0m" 304 -
+2025-04-22 15:36:35,978 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:36:35] "GET /parkinson HTTP/1.1" 200 -
+2025-04-22 15:36:35,996 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:36:35] "[36mGET /templates/static/chronicstyle.css HTTP/1.1[0m" 304 -
+2025-04-22 15:36:40,999 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:36:40] "GET /parkinson HTTP/1.1" 200 -
+2025-04-22 15:36:41,029 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:36:41] "[36mGET /templates/static/chronicstyle.css HTTP/1.1[0m" 304 -
+2025-04-22 15:38:47,077 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:38:47] "GET /parkinson HTTP/1.1" 200 -
+2025-04-22 15:38:47,135 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:38:47] "GET /templates/static/chronicstyle.css HTTP/1.1" 200 -
+2025-04-22 15:39:07,079 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:39:07] "[35m[1mGET /contact HTTP/1.1[0m" 500 -
+2025-04-22 15:39:07,292 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:39:07] "[36mGET /contact?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-04-22 15:39:07,292 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:39:07] "[36mGET /contact?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-04-22 15:39:07,689 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:39:07] "GET /contact?__debugger__=yes&cmd=resource&f=console.png&s=a1dyT201LpkHOCakJ2pP HTTP/1.1" 200 -
+2025-04-22 15:39:43,873 [INFO] -  * Detected change in 'D:\\python_practice\\complete_disease_prediction_app\\main.py', reloading
+2025-04-22 15:39:49,628 [INFO] -  * Restarting with stat
+2025-04-22 15:40:29,865 [INFO] - Diabetes model loaded successfully.
+2025-04-22 15:40:29,907 [INFO] - Parkinson's model loaded successfully.
+2025-04-22 15:40:29,931 [INFO] - Heart disease model loaded successfully.
+2025-04-22 15:40:29,963 [ERROR] - Error loading depression model/encoder: [Errno 2] No such file or directory: 'D:\\python_practice\\complete_disease_prediction_app\\Trained_sav_models\\trained_depression_model.sav'
+2025-04-22 15:40:29,963 [ERROR] - Error loading generic model/encoder: [Errno 2] No such file or directory: 'D:\\python_practice\\complete_disease_prediction_app\\Trained_sav_models\\trained_generic_model.sav'
+2025-04-22 15:40:30,260 [WARNING] -  * Debugger is active!
+2025-04-22 15:40:30,264 [INFO] -  * Debugger PIN: 105-493-473
+2025-04-22 15:40:30,478 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:40:30] "GET / HTTP/1.1" 200 -
+2025-04-22 15:40:31,242 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:40:31] "GET /contact HTTP/1.1" 200 -
+2025-04-22 15:40:31,701 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:40:31] "[36mGET /templates/static/style.css HTTP/1.1[0m" 304 -
+2025-04-22 15:40:31,718 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:40:31] "[36mGET /templates/static/script.js HTTP/1.1[0m" 304 -
+2025-04-22 15:42:37,153 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:42:37] "GET /contact HTTP/1.1" 200 -
+2025-04-22 15:42:37,171 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:42:37] "[36mGET /templates/static/style.css HTTP/1.1[0m" 304 -
+2025-04-22 15:42:37,179 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:42:37] "[36mGET /templates/static/script.js HTTP/1.1[0m" 304 -
+2025-04-22 15:42:43,828 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:42:43] "GET / HTTP/1.1" 200 -
+2025-04-22 15:42:52,076 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:42:52] "GET /generic HTTP/1.1" 200 -
+2025-04-22 15:42:52,183 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:42:52] "[33mGET /templates/script.js HTTP/1.1[0m" 404 -
+2025-04-22 15:42:52,184 [INFO] - 127.0.0.1 - - [22/Apr/2025 15:42:52] "[36mGET /templates/static/generic.css HTTP/1.1[0m" 304 -
