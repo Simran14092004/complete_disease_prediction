@@ -1,3 +1,5 @@
-flask
-sciki-learn
-numpy
+Flask==2.3.3
+joblib==1.3.2
+numpy==1.26.4
+scikit-learn==1.3.2
+pandas==2.2.2

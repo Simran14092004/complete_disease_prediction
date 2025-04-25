@@ -1,131 +1,258 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Parkinson's Disease Prediction</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="templates/static/chronicstyle.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Parkinson's Disease Prediction</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+   body {
+  font-family: 'Inter', sans-serif;
+  background: url('templates/static/images/6.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: #003135;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+            background-color: #AFDDE5; 
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        }
+
+h1, p {
+  text-align: center;
+}
+
+h1 {
+  font-weight: 700;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: #003135;
+}
+
+p {
+  color: #003135;
+  font-size: 1rem;
+  margin-bottom: 30px;
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-control {
+  border-radius: 10px;
+  border: none;
+  padding: 12px;
+  font-size: 1rem;
+  background-color: #f8f9fa;
+  color: #000;
+}
+
+.form-control:focus {
+  border: 2px solid #0fa4aa;
+  outline: none;
+  box-shadow: 0 0 8px rgba(15, 164, 170, 0.6);
+}
+
+.btn-primary {
+  background-color:  #d3011c;
+  border: none;
+  padding: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 12px;
+  transition: background 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #0c8a91;
+}
+
+.mt-4 {
+  margin-top: 30px;
+}
+
+.recommendations ul {
+  list-style-type: square;
+  padding-left: 20px;
+}
+
+.recommendations li {
+  color: #e0e0e0;
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #0fa4aa;
+  margin-bottom: 15px;
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+}
+
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="text-center">Parkinson's Disease Prediction</h1>
-        <p class="text-center">Fill in the required details to predict Parkinson's disease.</p>
-        <form action="/parkinson" method="POST">
-            <div class="form-group">
-                <label for="fo">Fundamental Frequency (Fo)</label>
-                <input type="number" step="any" class="form-control" id="fo" name="MDVP:Fo(Hz)" placeholder="Enter Fo (Hz)" required>
-            </div>
-            <div class="form-group">
-                <label for="fhi">Max Fundamental Frequency (Fhi)</label>
-                <input type="number" step="any" class="form-control" id="fhi" name="MDVP:Fhi(Hz)" placeholder="Enter Fhi (Hz)" required>
-            </div>
-            <div class="form-group">
-                <label for="flo">Min Fundamental Frequency (Flo)</label>
-                <input type="number" step="any" class="form-control" id="flo" name="MDVP:Flo(Hz)" placeholder="Enter Flo (Hz)" required>
-            </div>
-            <div class="form-group">
-                <label for="jitter_percent">Jitter (%)</label>
-                <input type="number" step="any" class="form-control" id="jitter_percent" name="MDVP:Jitter(%)" placeholder="Enter Jitter (%)" required>
-            </div>
-            <div class="form-group">
-                <label for="jitter_abs">Jitter (Abs)</label>
-                <input type="number" step="any" class="form-control" id="jitter_abs" name="MDVP:Jitter(Abs)" placeholder="Enter Jitter (Abs)" required>
-            </div>
-            <div class="form-group">
-                <label for="rap">RAP</label>
-                <input type="number" step="any" class="form-control" id="rap" name="MDVP:RAP" placeholder="Enter RAP" required>
-            </div>
-            <div class="form-group">
-                <label for="ppq">PPQ</label>
-                <input type="number" step="any" class="form-control" id="ppq" name="MDVP:PPQ" placeholder="Enter PPQ" required>
-            </div>
-            <div class="form-group">
-                <label for="ddp">Jitter (DDP)</label>
-                <input type="number" step="any" class="form-control" id="ddp" name="Jitter:DDP" placeholder="Enter Jitter (DDP)" required>
-            </div>
-            <div class="form-group">
-                <label for="shimmer">Shimmer</label>
-                <input type="number" step="any" class="form-control" id="shimmer" name="MDVP:Shimmer" placeholder="Enter Shimmer" required>
-            </div>
-            <div class="form-group">
-                <label for="shimmer_db">Shimmer (dB)</label>
-                <input type="number" step="any" class="form-control" id="shimmer_db" name="MDVP:Shimmer(dB)" placeholder="Enter Shimmer (dB)" required>
-            </div>
-            <div class="form-group">
-                <label for="apq3">Shimmer (APQ3)</label>
-                <input type="number" step="any" class="form-control" id="apq3" name="Shimmer:APQ3" placeholder="Enter Shimmer (APQ3)" required>
-            </div>
-            <div class="form-group">
-                <label for="apq5">Shimmer (APQ5)</label>
-                <input type="number" step="any" class="form-control" id="apq5" name="Shimmer:APQ5" placeholder="Enter Shimmer (APQ5)" required>
-            </div>
-            <div class="form-group">
-                <label for="apq">MDVP (APQ)</label>
-                <input type="number" step="any" class="form-control" id="apq" name="MDVP:APQ" placeholder="Enter MDVP (APQ)" required>
-            </div>
-            <div class="form-group">
-                <label for="dda">Shimmer (DDA)</label>
-                <input type="number" step="any" class="form-control" id="dda" name="Shimmer:DDA" placeholder="Enter Shimmer (DDA)" required>
-            </div>
-            <div class="form-group">
-                <label for="nhr">NHR</label>
-                <input type="number" step="any" class="form-control" id="nhr" name="NHR" placeholder="Enter NHR" required>
-            </div>
-            <div class="form-group">
-                <label for="hnr">HNR</label>
-                <input type="number" step="any" class="form-control" id="hnr" name="HNR" placeholder="Enter HNR" required>
-            </div>
-            <div class="form-group">
-                <label for="rpde">RPDE</label>
-                <input type="number" step="any" class="form-control" id="rpde" name="RPDE" placeholder="Enter RPDE" required>
-            </div>
-            <div class="form-group">
-                <label for="dfa">DFA</label>
-                <input type="number" step="any" class="form-control" id="dfa" name="DFA" placeholder="Enter DFA" required>
-            </div>
-            <div class="form-group">
-                <label for="spread1">Spread1</label>
-                <input type="number" step="any" class="form-control" id="spread1" name="spread1" placeholder="Enter Spread1" required>
-            </div>
-            <div class="form-group">
-                <label for="spread2">Spread2</label>
-                <input type="number" step="any" class="form-control" id="spread2" name="spread2" placeholder="Enter Spread2" required>
-            </div>
-            <div class="form-group">
-                <label for="d2">D2</label>
-                <input type="number" step="any" class="form-control" id="d2" name="D2" placeholder="Enter D2" required>
-            </div>
-            <div class="form-group">
-                <label for="ppe">PPE</label>
-                <input type="number" step="any" class="form-control" id="ppe" name="PPE" placeholder="Enter PPE" required>
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">Predict Parkinson's</button>
-        </form>
+  <div class="container">
+    <h1>Parkinson's Disease Prediction</h1>
+    <p>Fill in the required details to predict Parkinson's disease.</p>
 
-        <!-- Results Section -->
-        {% if prediction %}
-        <div class="mt-4">
-            <h2>Prediction Result</h2>
-            <p>{{ prediction }}</p>
-        </div>
-        {% endif %}
-
-        <!-- Recommendations Section -->
-        {% if recommendations %}
-        <div class="recommendations mt-4">
-            <h2>Recommendations</h2>
-            <ul>
-                {% for rec in recommendations %}
-                <li>{{ rec }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-        {% endif %}
+    <form action="/parkinson" method="POST">
+      <!-- Form Groups -->
+      <div class="form-group">
+        <label for="fo">Fundamental Frequency (Fo)</label>
+        <input type="number" step="any" class="form-control" id="fo" name="MDVP:Fo(Hz)" placeholder="Enter Fo (Hz)" required>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+      <div class="form-group">
+        <label for="fhi">Max Fundamental Frequency (Fhi)</label>
+        <input type="number" step="any" class="form-control" id="fhi" name="MDVP:Fhi(Hz)" placeholder="Enter Fhi (Hz)" required>
+    </div>
+
+      <div class="form-group">
+        <label for="flo">Min Fundamental Frequency (Flo)</label>
+        <input type="number" step="any" class="form-control" id="flo" name="MDVP:Flo(Hz)" placeholder="Enter Flo (Hz)" required>
+    </div>
+
+      <div class="form-group">
+        <label for="jitter_percent">Jitter (%)</label>
+        <input type="number" step="any" class="form-control" id="jitter_percent" name="MDVP:Jitter(%)" placeholder="Enter Jitter (%)" required>
+    </div>
+
+      <div class="form-group">
+        <label for="jitter_abs">Jitter (Abs)</label>
+        <input type="number" step="any" class="form-control" id="jitter_abs" name="MDVP:Jitter(Abs)" placeholder="Enter Jitter (Abs)" required>
+    </div>
+
+      <div class="form-group">
+        <label for="rap">RAP</label>
+        <input type="number" step="any" class="form-control" id="rap" name="MDVP:RAP" placeholder="Enter RAP" required>
+    </div>
+
+      <div class="form-group">
+        <label for="ppq">PPQ</label>
+        <input type="number" step="any" class="form-control" id="ppq" name="MDVP:PPQ" placeholder="Enter PPQ" required>
+    </div>
+
+      <div class="form-group">
+        <label for="ddp">Jitter (DDP)</label>
+        <input type="number" step="any" class="form-control" id="ddp" name="Jitter:DDP" placeholder="Enter Jitter (DDP)" required>
+    </div>
+
+      <div class="form-group">
+        <label for="shimmer">Shimmer</label>
+        <input type="number" step="any" class="form-control" id="shimmer" name="MDVP:Shimmer" placeholder="Enter Shimmer" required>
+    </div>
+
+      <div class="form-group">
+        <label for="shimmer_db">Shimmer (dB)</label>
+        <input type="number" step="any" class="form-control" id="shimmer_db" name="MDVP:Shimmer(dB)" placeholder="Enter Shimmer (dB)" required>
+    </div>
+
+      <div class="form-group">
+        <label for="apq3">Shimmer (APQ3)</label>
+        <input type="number" step="any" class="form-control" id="apq3" name="Shimmer:APQ3" placeholder="Enter Shimmer (APQ3)" required>
+    </div>
+
+      <div class="form-group">
+        <label for="apq5">Shimmer (APQ5)</label>
+        <input type="number" step="any" class="form-control" id="apq5" name="Shimmer:APQ5" placeholder="Enter Shimmer (APQ5)" required>
+    </div>
+
+      <div class="form-group">
+        <label for="apq">MDVP (APQ)</label>
+        <input type="number" step="any" class="form-control" id="apq" name="MDVP:APQ" placeholder="Enter MDVP (APQ)" required>
+    </div>
+
+      <div class="form-group">
+        <label for="dda">Shimmer (DDA)</label>
+        <input type="number" step="any" class="form-control" id="dda" name="Shimmer:DDA" placeholder="Enter Shimmer (DDA)" required>
+    </div>
+
+      <div class="form-group">
+        <label for="nhr">NHR</label>
+        <input type="number" step="any" class="form-control" id="nhr" name="NHR" placeholder="Enter NHR" required>
+    </div>
+
+      <div class="form-group">
+        <label for="hnr">HNR</label>
+        <input type="number" step="any" class="form-control" id="hnr" name="HNR" placeholder="Enter HNR" required>
+    </div>
+
+      <div class="form-group">
+        <label for="rpde">RPDE</label>
+        <input type="number" step="any" class="form-control" id="rpde" name="RPDE" placeholder="Enter RPDE" required>
+    </div>
+
+      <div class="form-group">
+        <label for="dfa">DFA</label>
+        <input type="number" step="any" class="form-control" id="dfa" name="DFA" placeholder="Enter DFA" required>
+    </div>
+
+      <div class="form-group">
+        <label for="spread1">Spread1</label>
+        <input type="number" step="any" class="form-control" id="spread1" name="spread1" placeholder="Enter Spread1" required>
+    </div>
+
+      <div class="form-group">
+        
+        <label for="spread2">Spread2</label>
+        <input type="number" step="any" class="form-control" id="spread2" name="spread2" placeholder="Enter Spread2" required>
+    </div>
+
+      <div class="form-group">
+        <label for="d2">D2</label>
+        <input type="number" step="any" class="form-control" id="d2" name="D2" placeholder="Enter D2" required>
+    </div>
+
+      <div class="form-group">
+        <label for="ppe">PPE</label>
+        <input type="number" step="any" class="form-control" id="ppe" name="PPE" placeholder="Enter PPE" required>
+    </div>
+
+      <button type="submit" class="btn btn-primary btn-block">Predict Parkinson's</button>
+    </form>
+
+    <!-- Result Sections -->
+    {% if prediction %}
+    <div class="mt-4">
+      <h2>Prediction Result</h2>
+      <p>{{ prediction }}</p>
+    </div>
+    {% endif %}
+
+    {% if recommendations %}
+    <div class="recommendations mt-4">
+      <h2>Recommendations</h2>
+      <ul>
+        {% for rec in recommendations %}
+        <li>{{ rec }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+  </div>
 </body>
 </html>

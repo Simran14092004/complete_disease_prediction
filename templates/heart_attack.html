@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Heart Attack Likelihood Visualization</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    :root {
+      --primary: #d3011c;
+      --accent: #0FA4AF;
+      --light: #AFDDE5;
+      --dark: #003135;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--dark);
+      color: var(--light);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: var(--primary);
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    main {
+      flex: 1;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #chart {
+      width: 100%;
+      max-width: 1000px;
+    }
+
+    footer {
+      background-color: var(--primary);
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 1.4rem;
+      }
+      main {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Heart Attack Likelihood by Factors</h1>
+  </header>
+
+  <main>
+    <div id="chart"></div>
+  </main>
+
+  <footer>
+    &copy; 2025 Heart Health Insights
+  </footer>
+
+  <script>
+    fetch('/api/heart-attack-data')
+      .then(response => response.json())
+      .then(data => {
+        const age = data['Age'];
+        const gender = data['Gender'];
+        const likelihood = data['Heart Attack Likelihood'];
+
+        const trace = {
+          x: age,
+          y: likelihood,
+          mode: 'markers',
+          marker: {
+            size: 10,
+            color: gender.map(g => g === 'Male' ? '#0FA4AF' : '#d3011c'),
+            line: {
+              color: '#AFDDE5',
+              width: 1
+            },
+            opacity: 0.8
+          },
+          text: gender.map((g, i) => `Gender: ${g}<br>Age: ${age[i]}<br>Likelihood: ${likelihood[i]}`),
+          hoverinfo: 'text',
+          type: 'scatter'
+        };
+
+        const layout = {
+          title: {
+            text: 'Heart Attack Likelihood by Age and Gender',
+            font: { color: '#AFDDE5', size: 22 }
+          },
+          plot_bgcolor: '#003135',
+          paper_bgcolor: '#003135',
+          font: { color: '#AFDDE5' },
+          xaxis: {
+            title: 'Age',
+            gridcolor: '#0FA4AF'
+          },
+          yaxis: {
+            title: 'Heart Attack Likelihood',
+            gridcolor: '#0FA4AF'
+          },
+          hovermode: 'closest'
+        };
+
+        Plotly.newPlot('chart', [trace], layout, { responsive: true });
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  </script>
+</body>
+</html>

@@ -5,16 +5,127 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generic Disease Prediction</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="templates/static/generic.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: url('templates/static/images/5.jpg') no-repeat center center fixed;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            background-color: #AFDDE5;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            margin-top: 60px;
+            max-width: 800px;
+        }
+
+        h2, h3, h4 {
+            color: #003135;
+            font-weight: 700;
+        }
+
+        .form-check-label {
+            color: #333;
+        }
+
+        .btn-primary {
+            display: block;
+            width: 100%;
+            background: #d3011c;
+            color: #fff;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #a10014;
+        }
+
+        .symptoms-container {
+            margin-bottom: 25px;
+        }
+
+        .symptoms-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 10px;
+            background: #f8f9fa;
+        }
+
+        .form-check {
+            margin-bottom: 12px;
+        }
+
+        #predictionResult {
+            margin-top: 30px;
+            padding: 25px;
+            border: 2px solid #28a745;
+            border-radius: 15px;
+            background: #e8f5e9;
+            color: #155724;
+        }
+
+        #recommendations, #topDiseasesSection {
+            margin-top: 20px;
+        }
+
+        #recommendationList, #topDiseasesList {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        #recommendationList li, #topDiseasesList li {
+            background: #ffffff;
+            margin-bottom: 10px;
+            padding: 10px 15px;
+            border-left: 5px solid #0FA4AF;
+            border-radius: 5px;
+        }
+
+        #errorDisplay {
+            margin-top: 20px;
+            padding: 20px;
+            border: 2px solid #dc3545;
+            border-radius: 10px;
+            background: #f8d7da;
+            color: #721c24;
+            font-weight: 500;
+        }
+
+        .symptoms-list::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .symptoms-list::-webkit-scrollbar-thumb {
+            background: #AFDDE5;
+            border-radius: 5px;
+        }
+
+        .symptoms-list::-webkit-scrollbar-thumb:hover {
+            background: #0FA4A3;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h2 class="text-center" style="color: #003135;">Generic Disease Prediction</h2>
+        <h2 class="text-center">Generic Disease Prediction</h2>
         <p class="text-center">Select your symptoms from the list below to predict potential diseases.</p>
-        <form action="/generic" method="POST" style="border: 2px solid  #003135; padding: 20px; border-radius: 10px;">
+        <form action="/generic" method="POST" style="padding: 20px;">
             <div class="symptoms-container">
-                <h3 style="color: #003135;">Select Your Symptoms</h3>
-                <div class="symptoms-list" id="symptomsList" style="background-color: #fff; padding: 10px; border-radius: 5px;">
+                <h3>Select Your Symptoms</h3>
+                <div class="symptoms-list" id="symptomsList">
                     {% for symptom in all_symptoms %}
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="symptoms" value="{{ symptom }}" id="{{ symptom }}">
@@ -23,14 +134,14 @@
                     {% endfor %}
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary mt-3" style="background-color: #d3011c; border: none;">Predict</button>
+            <button type="submit" class="btn btn-primary mt-3">Predict</button>
         </form>
 
         {% if prediction %}
-        <div id="predictionResult" class="mt-4" style="border: 2px solid #a10014; padding: 20px; border-radius: 10px;">
-            <h3 style="color: #0FA4AF;">Prediction: <span id="predictedDisease" style="color: #155724;">{{ prediction }}</span></h3>
+        <div id="predictionResult">
+            <h3>Prediction: <span id="predictedDisease">{{ prediction }}</span></h3>
             <div id="recommendations">
-                <h4 style="color: #155724;">Recommendations:</h4>
+                <h4>Recommendations:</h4>
                 <ul id="recommendationList">
                     {% for rec in recommendations %}
                     <li>{{ rec }}</li>
@@ -38,8 +149,8 @@
                 </ul>
             </div>
             {% if top_3_diseases %}
-            <div id="topDiseasesSection" class="mt-4">
-                <h4 style="color: #155724;">Top 3 Other Possible Diseases:</h4>
+            <div id="topDiseasesSection">
+                <h4>Top 3 Other Possible Diseases:</h4>
                 <ul id="topDiseasesList">
                     {% for disease, probability in top_3_diseases %}
                     <li>{{ disease }} - {{ probability | round(2) }}%</li>
@@ -51,15 +162,13 @@
         {% endif %}
 
         {% if get_flashed_messages() %}
-        <div id="errorDisplay" class="alert alert-danger mt-4">
+        <div id="errorDisplay">
             {% for message in get_flashed_messages() %}
             <p>{{ message }}</p>
             {% endfor %}
         </div>
         {% endif %}
     </div>
-
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </body>
 </html>

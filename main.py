@@ -1,5 +1,5 @@
 # main.py
-from flask import Flask, render_template, request, redirect, url_for, flash, session, g
+from flask import Flask, render_template, request, redirect, url_for, flash, session, g, jsonify
 import joblib
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
@@ -10,6 +10,12 @@ from dotenv import load_dotenv
 from collections import Counter  # Import Counter
 import os
 import logging  # Import the logging module
+import pandas as pd
+#below three especially for depression model
+import pickle
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import StandardScaler
+
 
 # Load environment variables from .env file
 load_dotenv()
@@ -111,23 +117,72 @@ except Exception as e:
     # exit(1)
     heart_disease_model = None
 
+
 try:
-    depression_label_encoder = joblib.load(os.path.join(BASE_DIR, 'label_encoder_models\\encoder_columns.sav'))
-    depression_trained_model = joblib.load(os.path.join(BASE_DIR, 'Trained_sav_models\\trained_depression_model.sav'))
-    logger.info("Depression model and encoder loaded successfully.")
+    depression_trained_model = joblib.load(os.path.join(BASE_DIR, 'Trained_sav_models\depression_model_pipeline (1).sav'))
+    logger.info("Depression model pipeline loaded successfully.")
+except FileNotFoundError:
+    logger.error("Depression model pipeline file not found. Please check the file path.")
+    depression_trained_model = None
 except Exception as e:
-    logger.error(f"Error loading depression model/encoder: {e}")
-    depression_label_encoder = None
+    logger.error(f"Error loading depression model pipeline: {e}")
     depression_trained_model = None
 
 try:
-    generic_trained_model = joblib.load(os.path.join(BASE_DIR, 'Trained_sav_models\\trained_generic_model.sav'))
-    genericdisease_label_encoder = joblib.load(os.path.join(BASE_DIR, 'label_encoder_models\\generic_label_encoder.sav'))
-    logger.info("Generic disease model and encoder loaded successfully.")
-except Exception as e:
-    logger.error(f"Error loading generic model/encoder: {e}")
+    # Load the generic disease model
+    generic_trained_model = joblib.load(os.path.join(BASE_DIR, 'Trained_sav_models/random_forest_model.sav'))
+    logger.info("Generic disease model loaded successfully.")
+except FileNotFoundError:
+    logger.error("Generic disease model file not found. Please check the file path.")
     generic_trained_model = None
-    genericdisease_label_encoder = None
+except Exception as e:
+    logger.error(f"Error loading generic model: {e}")
+    generic_trained_model = None
+
+
+#generic label encoder
+try:
+    with open(os.path.join(BASE_DIR, 'label_encoder_models/label_encoder.sav'), 'rb') as f:
+        generic_label_encoder = joblib.load(f)
+    logger.info("Generic disease label encoder loaded successfully.")
+except FileNotFoundError:
+    logger.error("Generic disease label encoder file not found. Please check the file path.")
+    generic_label_encoder = None
+
+#chart breast cancer
+# Load the breast cancer dataset
+try:
+    file_path = os.path.join(BASE_DIR, r'increasing_disease_india\Breast_cancer_india(2016-2021).csv')
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"File not found: {file_path}")
+    breast_cancer_data = pd.read_csv(file_path)
+    logger.info("Breast cancer data loaded successfully.")
+except FileNotFoundError as e:
+    logger.error(f"File not found: {e}")
+    raise
+except Exception as e:
+    logger.error(f"Error loading breast cancer data: {e}")
+    raise
+
+#chart heart attack
+# Load the heart attack dataset
+# Load the heart attack dataset
+try:
+    file_path = os.path.join(BASE_DIR, r'increasing_disease_india/heart_attack_youngsters_india.csv')
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"File not found: {file_path}")
+    heart_attack_data = pd.read_csv(file_path)
+    logger.info("Heart attack data loaded successfully.")
+except FileNotFoundError as e:
+    logger.error(f"File not found: {e}")
+    raise
+except Exception as e:
+    logger.error(f"Error loading heart attack data: {e}")
+    raise
+
+
+
+
 
 # --- Helper Functions ---
 def predict_disease(model, data):
@@ -216,77 +271,65 @@ def index():
 
 @app.route('/mental', methods=['GET', 'POST'])
 def mental():
-    """Mental disease prediction page."""
-    if request.method == 'POST':
-        terms = ['Gender', 'Age', 'Profession', 'Academic Pressure', 
-                 'Work Pressure', 'CGPA', 'Study Satisfaction', 'Job Satisfaction', 
-                 'Sleep Duration', 'Dietary Habits', 'Degree', 
-                 'Have you ever had suicidal thoughts ?', 'Work/Study Hours', 
-                 'Financial Stress', 'Family History of Mental Illness']
+    """Mental disease prediction page (Depression)."""
+    # Expected fields and their data types
+    expected_fields = [
+        'Age', 'Gender', 'Profession', 'Academic Pressure', 'Work Pressure', 'CGPA', 'Study Satisfaction',
+        'Job Satisfaction', 'Sleep Duration', 'Dietary Habits', 'Degree', 'Have you ever had suicidal thoughts ?',
+        'Work/Study Hours', 'Financial Stress', 'Family History of Mental Illness'
+    ]
 
-        types = {
-            'Gender': int, 'Age': int, 'Profession': str,
-            'Academic Pressure': int, 'Work Pressure': int, 'CGPA': float,
-            'Study Satisfaction': int, 'Job Satisfaction': int, 'Sleep Duration': str,
-            'Dietary Habits': str, 'Degree': str,
-            'Have you ever had suicidal thoughts ?': int, 'Work/Study Hours': int,
-            'Financial Stress': int, 'Family History of Mental Illness': int
-        }
+    # Field types for validation
+    types = {
+        'Age': float, 'Gender': str, 'Profession': str, 'Academic Pressure': float, 'Work Pressure': float,
+        'CGPA': float, 'Study Satisfaction': float, 'Job Satisfaction': float, 'Sleep Duration': str,
+        'Dietary Habits': str, 'Degree': str, 'Have you ever had suicidal thoughts ?': str,
+        'Work/Study Hours': float, 'Financial Stress': float, 'Family History of Mental Illness': str
+    }
 
+    if request.method == 'POST' and depression_trained_model:
+        # Validate input data
         validated_data = {}
-        try:
-            for term, term_type in types.items():
-                value = request.form.get(term)
-                if value is None:
-                    raise ValueError(f"Missing field: {term}")
-                validated_data[term] = value if term_type == str else term_type(value)
-
-            # Validation for ranges
-            if not (0 <= validated_data['Academic Pressure'] <= 10):
-                raise ValueError("Academic Pressure must be between 0 and 10.")
-            if not (0 <= validated_data['Work Pressure'] <= 10):
-                raise ValueError("Work Pressure must be between 0 and 10.")
-            if not (0 <= validated_data['Study Satisfaction'] <= 5):
-                raise ValueError("Study Satisfaction must be between 0 and 5.")
-            if not (0 <= validated_data['Job Satisfaction'] <= 5):
-                raise ValueError("Job Satisfaction must be between 0 and 5.")
-            if not (0 <= validated_data['Financial Stress'] <= 10):
-                raise ValueError("Financial Stress must be between 0 and 10.")
-
-        except ValueError as e:
-            flash(str(e), "error")
-            return render_template('mental.html')
-
-        categorical_fields = ['Profession', 'Degree', 'Sleep Duration', 'Dietary Habits']
-        encoded_data = []
-        try:
-            for term in terms:
-                if term in categorical_fields:
-                    encoder = joblib.load(os.path.join(BASE_DIR, 'label_encoder_models\\encoder_columns.sav'))
-                    encoded_value = encoder.transform([validated_data[term]])[0]
-                    encoded_data.append(encoded_value)
-                else:
-                    encoded_data.append(validated_data[term])
-
-        except Exception as e:
-            logger.error(f"Error encoding data: {e}")
-            flash(f"Error encoding data: {e}", "error")
-            return render_template('mental.html')
+        for field in expected_fields:
+            if field not in request.form:
+                flash(f"Missing field: {field}", "error")
+                return render_template('mental.html', disease_type='depression')
+            try:
+                validated_data[field] = types[field](request.form[field])
+            except ValueError:
+                flash(f"Invalid data type for {field}. Expected {types[field].__name__}.", "error")
+                return render_template('mental.html', disease_type='depression')
 
         try:
-            input_data = np.array([encoded_data])
-            if depression_trained_model:
-                prediction_encoded = depression_trained_model.predict(input_data)[0]
-                prediction = depression_label_encoder.inverse_transform([prediction_encoded])[0]
-                recommendations = get_recommendations("Depression", "Positive" if prediction == "Positive" else "Negative")
-                return render_template('mental.html', prediction=prediction, recommendations=recommendations)
+            # Convert input data to DataFrame
+            input_df = pd.DataFrame([validated_data])
+
+            # Make prediction using the trained pipeline
+            prediction = depression_trained_model.predict(input_df)[0]
+            prediction_proba = depression_trained_model.predict_proba(input_df)[0]
+
+            # Interpret prediction
+            if prediction == 0:
+                prediction_text = "Not Depressed"
+                recommendations = ["Maintain a healthy lifestyle", "Continue good habits"]
             else:
-                flash("The depression model is not loaded.", "error")
-        except Exception as e:
-            logger.error(f"An unexpected error occurred: {e}")
-            flash(f"An unexpected error occurred: {e}", "error")
+                prediction_text = "Depressed"
+                recommendations = ["Seek professional help", "Consider therapy or counseling", "Follow a balanced lifestyle"]
 
-    return render_template('mental.html')
+            logger.info(f"Prediction: {prediction_text}, Probabilities: {prediction_proba}")
+
+            return render_template(
+                'mental.html',
+                disease_type='depression',
+                prediction=prediction_text,
+                recommendations=recommendations
+            )
+        except Exception as e:
+            logger.error(f"Error during depression prediction: {e}")
+            flash("An unexpected error occurred. Please try again.", "error")
+
+    # Render the page for GET method
+    return render_template('mental.html', disease_type='depression')
 
 
 @app.route('/diabetes', methods=['GET', 'POST'])
@@ -406,83 +449,85 @@ def parkinson():
     return render_template('parkinson.html', disease_type='parkinson')
 
 
-
 @app.route('/generic', methods=['GET', 'POST'])
 def generic():
     """Generic disease prediction page."""
-    all_symptoms_list = ['itching', 'skin_rash', 'nodal_skin_eruptions', 'continuous_sneezing', 'shivering', 'chills',
-                        'joint_pain', 'stomach_pain', 'acidity', 'ulcers_on_tongue', 'muscle_wasting', 'vomiting',
-                        'burning_micturition', 'spotting_ urination', 'fatigue', 'weight_gain', 'anxiety',
-                        'cold_hands_and_feets', 'mood_swings', 'weight_loss', 'restlessness', 'lethargy',
-                        'patches_in_throat', 'irregular_sugar_level', 'cough', 'high_fever', 'sunken_eyes',
-                        'breathlessness', 'sweating', 'dehydration', 'indigestion', 'headache', 'yellowish_skin',
-                        'dark_urine', 'nausea', 'loss_of_appetite', 'pain_behind_the_eyes', 'back_pain', 'neck_pain',
-                        'knee_pain', 'hip_joint_pain', 'swelling_joints', 'muscle_weakness', 'stiff_neck', 'swelling',
-                        'painful_walking', 'pus_filled_pimples', 'blackheads', 'scurring', 'bladder_discomfort',
-                        'foul_smell_of_urine', 'continuous_feel_of_urine', 'passage_of_gases', 'internal_itching',
-                        'toxic_look_(typhos)', 'depression', 'irritability', 'muscle_pain', 'altered_sensorium',
-                        'red_spots_over_body', 'belly_pain', 'abnormal_menstruation', 'dischromic _patches',
-                        'watering_from_eyes', 'increased_appetite', 'polyuria', 'family_history', 'mucoid_sputum',
-                        'rusty_sputum', 'lack_of_concentration', 'visual_disturbances', 'receiving_blood_transfusion',
-                        'receiving_unsterile_injections', 'coma', 'stomach_bleeding', 'coughing_and_blood_in_sputum',
-                        'palpitations', 'chest_pain', 'dizziness', 'cramps', 'bruising', 'obesity', 'swollen_legs',
-                        'swollen_blood_vessels', 'puffy_face_and_eyes', 'enlarged_thyroid', 'brittle_nails',
-                        'swollen _extremities', 'excessive_hunger', 'extra_marital_contacts', 'drying_and_tingling_lips',
-                        'slurred_speech', 'knee-joint_pain', 'hip-joint_pain', 'loss_of_balance', 'unsteadiness',
-                        'weakness_of_one_body_side', 'loss_of_smell', 'bladder_pressure', 'skin_peeling',
-                        'silver_like_dusting', 'small_dents_in_nails', 'inflammatory_nails', 'blisters',
-                        'red_sore_around_nose', 'yellow_crust_ooze']  # Ensure this matches your model's input order
+    all_symptoms_list = [
+        'itching', 'skin_rash', 'nodal_skin_eruptions', 'continuous_sneezing', 'shivering', 'chills',
+        'joint_pain', 'stomach_pain', 'acidity', 'ulcers_on_tongue', 'muscle_wasting', 'vomiting',
+        'burning_micturition', 'spotting_urination', 'fatigue', 'weight_gain', 'anxiety', 'cold_hands_and_feets',
+        'mood_swings', 'weight_loss', 'restlessness', 'lethargy', 'patches_in_throat', 'irregular_sugar_level',
+        'cough', 'high_fever', 'sunken_eyes', 'breathlessness', 'sweating', 'dehydration', 'indigestion',
+        'headache', 'yellowish_skin', 'dark_urine', 'nausea', 'loss_of_appetite', 'pain_behind_the_eyes',
+        'back_pain', 'constipation', 'abdominal_pain', 'diarrhoea', 'mild_fever', 'yellow_urine', 'yellowing_of_eyes',
+        'acute_liver_failure', 'fluid_overload', 'swelling_of_stomach', 'swelled_lymph_nodes', 'malaise',
+        'blurred_and_distorted_vision', 'phlegm', 'throat_irritation', 'redness_of_eyes', 'sinus_pressure',
+        'runny_nose', 'congestion', 'chest_pain', 'weakness_in_limbs', 'fast_heart_rate', 'pain_during_bowel_movements',
+        'pain_in_anal_region', 'bloody_stool', 'irritation_in_anus', 'neck_pain', 'dizziness', 'cramps', 'bruising',
+        'obesity', 'swollen_legs', 'swollen_blood_vessels', 'puffy_face_and_eyes', 'enlarged_thyroid', 'brittle_nails',
+        'swollen_extremeties', 'excessive_hunger', 'extra_marital_contacts', 'drying_and_tingling_lips', 'slurred_speech',
+        'knee_pain', 'hip_joint_pain', 'muscle_weakness', 'stiff_neck', 'swelling_joints', 'movement_stiffness',
+        'spinning_movements', 'loss_of_balance', 'unsteadiness', 'weakness_of_one_body_side', 'loss_of_smell',
+        'bladder_discomfort', 'foul_smell_of_urine', 'continuous_feel_of_urine', 'passage_of_gases', 'internal_itching',
+        'toxic_look_(typhos)', 'depression', 'irritability', 'muscle_pain', 'altered_sensorium', 'red_spots_over_body',
+        'belly_pain', 'abnormal_menstruation', 'dischromic_patches', 'watering_from_eyes', 'increased_appetite',
+        'polyuria', 'family_history', 'mucoid_sputum', 'rusty_sputum', 'lack_of_concentration', 'visual_disturbances',
+        'receiving_blood_transfusion', 'receiving_unsterile_injections', 'coma', 'stomach_bleeding', 'distention_of_abdomen',
+        'history_of_alcohol_consumption', 'fluid_overload', 'blood_in_sputum', 'prominent_veins_on_calf', 'palpitations',
+        'painful_walking', 'pus_filled_pimples', 'blackheads', 'scurring', 'skin_peeling', 'silver_like_dusting',
+        'small_dents_in_nails', 'inflammatory_nails', 'blister', 'red_sore_around_nose', 'yellow_crust_ooze'
+        # ... (remaining symptoms)
+    ]
 
-
-    if request.method == 'POST' and generic_trained_model and genericdisease_label_encoder: #check for model
+    if request.method == 'POST' and generic_trained_model and generic_label_encoder:
         try:
-            # Get form data -  symptoms
+            # Get selected symptoms
             selected_symptoms = request.form.getlist('symptoms')
-            input_vector = np.zeros(len(all_symptoms_list))
-            for symptom in selected_symptoms:
-                if symptom in all_symptoms_list:
-                    index = all_symptoms_list.index(symptom)
-                    input_vector[index] = 1
+            if not selected_symptoms:
+                flash("Please select at least one symptom.", "error")
+                return render_template('generic.html', all_symptoms=all_symptoms_list)
 
-            data = np.array([input_vector])
-            logger.debug(f"Input data shape for generic prediction: {data.shape}")
-            logger.debug(f"Input data content for generic prediction: {data}")
+            # Create input vector
+            input_vector = [1 if symptom in selected_symptoms else 0 for symptom in all_symptoms_list]
+            data = np.array([input_vector])  # Ensure 2D array for prediction
+            logger.debug(f"Input vector: {input_vector}")
+            logger.debug(f"Input data for prediction: {data}")
 
             # Make prediction
-            prediction_encoded = predict_disease(generic_trained_model, data)
-            logger.debug(f"Encoded prediction for generic disease: {prediction_encoded}")
-            if prediction_encoded is not None:
-                prediction = genericdisease_label_encoder.inverse_transform([prediction_encoded])[0]
-                logger.debug(f"Decoded prediction for generic disease: {prediction}")
+            prediction_encoded = generic_trained_model.predict(data)[0]
+            prediction = generic_label_encoder.inverse_transform([prediction_encoded])[0]
+            logger.debug(f"Encoded prediction: {prediction_encoded}")
+            logger.debug(f"Decoded prediction: {prediction}")
 
-                # Get probabilities for top 3 diseases
-                probabilities = generic_trained_model.predict_proba(data)[0]
-                logger.debug(f"Probabilities for generic disease: {probabilities}")
-                top_3_indices = probabilities.argsort()[-3:][::-1]  # Get indices of top 3 probabilities
-                top_3_diseases_encoded = genericdisease_label_encoder.classes_[top_3_indices]
-                top_3_probabilities = probabilities[top_3_indices]
-                top_3_diseases = []
-                for i in range(3):
-                    disease_name = genericdisease_label_encoder.inverse_transform([top_3_diseases_encoded[i]])[0]
-                    top_3_diseases.append((disease_name, top_3_probabilities[i] * 100))  # Convert to percentage
-                logger.debug(f"Top 3 diseases: {top_3_diseases}")
-                recommendations_positive = get_recommendations("Generic Disease", "Positive")
-                recommendations_negative = get_recommendations("Generic Disease", "Negative")
-                recommendations = recommendations_positive if prediction == "Positive" else recommendations_negative
-                logger.debug(f"Recommendations for generic disease: {recommendations}")
-                return render_template('generic.html', all_symptoms=all_symptoms_list, prediction=prediction, recommendations=recommendations, top_3_diseases=top_3_diseases)
-            else:
-                flash("Error: Could not get a prediction.", "error")
-                return render_template('generic.html', all_symptoms=all_symptoms_list)
-        except ValueError:
-            flash("Invalid input. Please check the symptom values.", "error")
-            return render_template('generic.html', all_symptoms=all_symptoms_list)
+            # Top 3 predictions
+            probabilities = generic_trained_model.predict_proba(data)[0]
+            top_3_indices = np.argsort(probabilities)[-3:][::-1]
+            top_3_predictions = [
+                (generic_label_encoder.inverse_transform([i])[0], probabilities[i] * 100)
+                for i in top_3_indices
+            ]
+            logger.debug(f"Top 3 predictions: {top_3_predictions}")
+
+            # # Recommendations
+            # recommendations = get_recommendations("Generic Disease", prediction)
+             # Recommendations
+            # Determine whether the prediction is positive or negative (logic can be adapted)
+            prediction_label = "Positive" if prediction_encoded == 1 else "Negative"
+            recommendations = get_recommendations("Generic Disease", prediction_label)
+
+
+            return render_template(
+                'generic.html',
+                all_symptoms=all_symptoms_list,
+                prediction=prediction,
+                recommendations=recommendations,
+                top_3_diseases=top_3_predictions
+            )
         except Exception as e:
-            logger.error(f"An unexpected error occurred: {e}")
-            flash(f"An unexpected error occurred: {e}", "error")
-            return render_template('generic.html', all_symptoms=all_symptoms_list)
-    # Render the form with all symptoms.  Important for the GET request.
+            logger.error("Error during generic disease prediction", exc_info=True)
+            flash("An unexpected error occurred. Please try again.", "error")
     return render_template('generic.html', all_symptoms=all_symptoms_list)
+
 
 
 
@@ -565,6 +610,40 @@ def contact():
             return render_template('contacts.html')
 
     return render_template('contacts.html')
+
+
+@app.route('/about', methods=['GET'])
+def about():
+    """About Us page."""
+    return render_template('aboutus.html')
+
+
+
+# route for  breast cancer dataset chart
+
+
+@app.route('/charts/breast-cancer')
+def breast_cancer_chart():
+    return render_template('breast_chart.html')
+
+@app.route('/api/breast-cancer-data')
+def breast_cancer_data_api():
+    # Transform the data to JSON format for visualization
+    data = breast_cancer_data.to_dict(orient='list')
+    return jsonify(data)
+
+
+#route for heart attack dataset chart
+@app.route('/charts/heart-attack')
+def heart_attack_chart():
+    return render_template('heart_attack.html')
+
+@app.route('/api/heart-attack-data')
+def heart_attack_data_api():
+    # Transform the heart attack dataset into JSON format
+    data = heart_attack_data.to_dict(orient='list')
+    return jsonify(data)
+
 
 
 if __name__ == '__main__':
