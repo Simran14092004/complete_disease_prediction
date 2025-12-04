@@ -8,7 +8,8 @@ CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
-    password TEXT NOT NULL
+    password TEXT NOT NULL,
+    role TEXT DEFAULT 'user'
 );
 
 --  No need to create tables for models.  Those are for the python scripts, not the database.

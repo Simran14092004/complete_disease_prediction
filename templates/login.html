@@ -29,7 +29,6 @@
             background-color: #fff;
             padding: 2rem;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             width: 400px;
             max-width: 100%;
             display: flex;
@@ -63,6 +62,7 @@
             transition: background-color 0.3s ease;
             font-size: 1rem;
             color: white;
+            /* Removed box-shadow, now handled by .neumorphic */
         }
 
         .social-button i {
@@ -188,16 +188,16 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container neumorphic">
         <h2>Login</h2>
         <div class="social-login">
-            <button class="social-button google">
+            <button class="social-button google neumorphic">
                 <i class="fab fa-google"></i> Login with Google
             </button>
-            <button class="social-button github">
+            <button class="social-button github neumorphic">
                 <i class="fab fa-github"></i> Login with GitHub
             </button>
-            <button class="social-button linkedin">
+            <button class="social-button linkedin neumorphic">
                 <i class="fab fa-linkedin"></i> Login with LinkedIn
             </button>
         </div>
@@ -215,7 +215,7 @@
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" placeholder="Your Password">
             </div>
-            <button type="submit" class="submit-button">Login</button>
+            <button type="submit" class="submit-button neumorphic">Login</button>
         </form>
         <div class="signup-link">
             Don't have an account? <a href="templates\signup.html">Sign Up</a>
@@ -235,6 +235,37 @@
         
         {% block content %}{% endblock %}
     </main>
+    <script>
+        document.querySelector('form').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    localStorage.setItem('access_token', data.access_token);
+                    alert('Login successful!');
+                    window.location.href = '/'; // Redirect to home page
+                } else {
+                    alert('Login failed: ' + data.msg);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred during login.');
+            }
+        });
+    </script>
     <script src="templates/static/script.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </body>

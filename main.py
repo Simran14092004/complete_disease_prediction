@@ -1,4 +1,6 @@
 # main.py
+import jwt
+from datetime import datetime, timedelta
 from flask import Flask, render_template, request, redirect, url_for, flash, session, g, jsonify
 import joblib
 import numpy as np
@@ -8,6 +10,7 @@ import sqlite3  # For persistent storage
 from flask_mail import Mail, Message  # For sending emails
 from dotenv import load_dotenv
 from collections import Counter  # Import Counter
+from functools import wraps # Import wraps for decorators
 import os
 import logging  # Import the logging module
 import pandas as pd
@@ -24,7 +27,45 @@ app = Flask(__name__, template_folder='templates', static_folder='templates')
 # Set the secret key
 app.secret_key = os.getenv('SECRET_KEY', 'fallback_super_secret_key')  # Fallback ensures the app runs even without .env
 
+# JWT Configuration
+app.config['JWT_SECRET_KEY'] = app.secret_key
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
+
+# --- JWT Decorators ---
+def jwt_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = None
+        # jwt is passed in the request header
+        if 'Authorization' in request.headers:
+            token = request.headers['Authorization'].split(" ")[1]
+        if not token:
+            return jsonify({'message': 'Token is missing!'}), 401
+  
+        try:
+            # decoding the token
+            data = jwt.decode(token, app.config['JWT_SECRET_KEY'], algorithms=["HS256"])
+            g.user_id = data['user_id']
+            g.user_role = data['role']
+        except:
+            return jsonify({'message': 'Token is invalid!'}), 401
+        # returns the current logged in users context to the route
+        return f(*args, **kwargs)
+  
+    return decorated
+
+def roles_required(roles):
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            if not hasattr(g, 'user_role') or g.user_role not in roles:
+                return jsonify({'message': 'Access forbidden: Insufficient permissions'}), 403
+            return f(*args, **kwargs)
+        return decorated_function
+    return decorator
+
 # --- Configuration ---
+
 # Database Configuration
 DATABASE_PATH = 'health_database.db'  # SQLite database file
 
@@ -533,7 +574,7 @@ def generic():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    """Login page."""
+    """Login page (for UI-based login, still uses sessions)."""
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -543,11 +584,33 @@ def login():
         if user and check_password_hash(user['password'], password):
             session['user_id'] = user['id']
             session['username'] = user['name']
+            session['role'] = user['role']  # Store role in session
             flash('Logged in successfully!', 'success')
             return redirect(url_for('index'))  # Redirect to home or profile
         else:
             flash('Invalid login credentials. Please try again.', 'error')
     return render_template('login.html')
+
+@app.route('/api/login', methods=['POST'])
+def api_login():
+    """API Login endpoint (returns JWT token)."""
+    email = request.json.get('email', None)
+    password = request.json.get('password', None)
+
+    if not email or not password:
+        return jsonify({"msg": "Missing email or password"}), 400
+
+    user = query_db('SELECT * FROM users WHERE email = ?', [email], one=True)
+
+    if user and check_password_hash(user['password'], password):
+        access_token = jwt.encode({
+            'user_id': user['id'],
+            'role': user['role'],
+            'exp': datetime.utcnow() + app.config['JWT_ACCESS_TOKEN_EXPIRES']
+        }, app.config['JWT_SECRET_KEY'], algorithm="HS256")
+        return jsonify(access_token=access_token), 200
+    else:
+        return jsonify({"msg": "Bad username or password"}), 401
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -570,9 +633,9 @@ def signup():
         # Hash the password
         hashed_password = generate_password_hash(password)
 
-        # Insert the new user into the database
-        modify_db('INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
-                  [name, email, hashed_password])
+        # Insert the new user into the database with a default role
+        modify_db('INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)',
+                  [name, email, hashed_password, 'user'])
 
         flash('Account created successfully! Please log in.', 'success')
         return redirect(url_for('login'))
@@ -645,6 +708,27 @@ def heart_attack_data_api():
     return jsonify(data)
 
 
+
+@app.route('/api/user_info', methods=['GET'])
+@jwt_required
+def user_info():
+    """Returns user information for authenticated users."""
+    return jsonify({
+        'message': 'Welcome to your user dashboard!',
+        'user_id': g.user_id,
+        'role': g.user_role
+    }), 200
+
+@app.route('/api/admin_only', methods=['GET'])
+@jwt_required
+@roles_required(['admin'])
+def admin_only():
+    """Returns a message only for admin users."""
+    return jsonify({
+        'message': 'Welcome, Admin! This content is for administrators only.',
+        'user_id': g.user_id,
+        'role': g.user_role
+    }), 200
 
 if __name__ == '__main__':
     # Initialize the database before running the app

@@ -30,6 +30,15 @@
                 </ul>
             </nav>
         </div>
+           <!-- Chatbot Button in Header -->
+        <div>
+            <a href="http://localhost:8501" target="_blank" 
+               class="neumorphic chatbot-button">
+                Chat with Bot
+            </a>
+        </div>
+
+
     </header>
 
          <!-- Welcome Section -->
@@ -49,8 +58,9 @@
         <section id="disease-prediction" class="section">
             <h2>Explore Disease Predictions</h2>
             <div class="slider-container disease-slider">
+                <button class="slider-prev">❮</button>
                 <div class="slider-wrapper">
-                    <div class="disease-box" onclick="window.location='/diabetes'">
+                    <div class="disease-box neumorphic" onclick="window.location='/diabetes'">
                         <div class="box-image">
                             <img src="templates\static\images\diabetes.jpg" alt="Diabetes">
                         </div>
@@ -59,7 +69,7 @@
                             <p>Learn about diabetes and its prediction.</p>
                         </div>
                     </div>
-                    <div class="disease-box" onclick="window.location='/parkinson'">
+                    <div class="disease-box neumorphic" onclick="window.location='/parkinson'">
                         <div class="box-image">
                             <img src="templates\static\images\8.jpg" alt="Parkinson's">
                         </div>
@@ -68,7 +78,7 @@
                             <p>Learn about Parkinson's disease.</p>
                         </div>
                     </div>
-                    <div class="disease-box" onclick="window.location='/heart'">
+                    <div class="disease-box neumorphic" onclick="window.location='/heart'">
                         <div class="box-image">
                             <img src="templates\static\images\2.jpg" alt="Heart Disease">
                         </div>
@@ -77,7 +87,7 @@
                             <p>Information on heart disease.</p>
                         </div>
                     </div>
-                    <div class="disease-box" onclick="window.location='/mental'">
+                    <div class="disease-box neumorphic" onclick="window.location='/mental'">
                         <div class="box-image">
                             <img src="templates\static\images\3.jpg" alt="Depression">
                         </div>
@@ -86,7 +96,7 @@
                             <p>Learn about mental depression.</p>
                         </div>
                     </div>
-                     <div class="disease-box" onclick="window.location='/generic'">
+                     <div class="disease-box neumorphic" onclick="window.location='/generic'">
                         <div class="box-image">
                             <img src="templates\static\images\5.jpg" alt="Generic Disease">
                         </div>
@@ -96,14 +106,17 @@
                         </div>
                     </div>
                 </div>
+                <button class="slider-next">❯</button>
+                <div class="slider-pagination"></div>
             </div>
         </section>
 
         <section id="articles" class="section">
             <h2>Featured Articles</h2>
             <div class="slider-container article-slider">
+                <button class="slider-prev">❮</button>
                 <div class="slider-wrapper">
-                    <div class="article-box" onclick="window.open('https://www.mentalhealth.org/get-help/immediate-help', '_blank')">
+                    <div class="article-box neumorphic" onclick="window.open('https://www.mentalhealth.org/get-help/immediate-help', '_blank')">
                         <div class="box-image">
                             <img src="templates\static\images\5.jpg" alt="Understanding Depression">
                         </div>
@@ -112,7 +125,7 @@
                             <p>Learn about the causes and symptoms of depression.</p>
                         </div>
                     </div>
-                    <div class="article-box" onclick="window.open('https://www.heart.org/en/health-topics/consumer-healthcare/what-is-cardiovascular-disease/how-to-help-prevent-heart-disease-at-any-age', '_blank')">
+                    <div class="article-box neumorphic" onclick="window.open('https://www.heart.org/en/health-topics/consumer-healthcare/what-is-cardiovascular-disease/how-to-help-prevent-heart-disease-at-any-age', '_blank')">
                         <div class="box-image">
                             <img src="templates\static\images\6.jpg" alt="Heart Health Tips">
                         </div>
@@ -121,7 +134,7 @@
                             <p>Essential tips for maintaining a healthy heart.</p>
                         </div>
                     </div>
-                    <div class="article-box" onclick="window.open('https://www.niddk.nih.gov/health-information/diabetes/overview/managing-diabetes', '_blank')">
+                    <div class="article-box neumorphic" onclick="window.open('https://www.niddk.nih.gov/health-information/diabetes/overview/managing-diabetes', '_blank')">
                         <div class="box-image">
                             <img src="templates\static\images\diabetes.jpg" alt="Managing Diabetes">
                         </div>
@@ -130,7 +143,7 @@
                             <p>Effective strategies for managing diabetes.</p>
                         </div>
                     </div>
-                    <div class="article-box" onclick="window.open('https://www.parkinson.org/', '_blank')">
+                    <div class="article-box neumorphic" onclick="window.open('https://www.parkinson.org/', '_blank')">
                         <div class="box-image">
                             <img src="templates\static\images\8.jpg" alt="Parkinson's Disease">
                         </div>
@@ -140,14 +153,17 @@
                         </div>
                     </div>
                 </div>
+                <button class="slider-next">❯</button>
+                <div class="slider-pagination"></div>
             </div>
         </section>
 
         <section id="courses" class="section">
             <h2>Free Courses</h2>
             <div class="slider-container course-slider">
+                <button class="slider-prev">❮</button>
                 <div class="slider-wrapper">
-                     <div class="course-box" onclick="window.open('https://www.mentalhealth.org/get-help/immediate-help', '_blank')">
+                     <div class="course-box neumorphic" onclick="window.open('https://www.mentalhealth.org/get-help/immediate-help', '_blank')">
                         <div class="box-image">
                             <img src="templates\static\images\1.jpg" alt="Mental Health First Aid">
                         </div>
@@ -156,7 +172,7 @@
                             <p>Learn to provide initial support during a mental health crisis.</p>
                         </div>
                     </div>
-                    <div class="course-box" onclick="window.open('https://www.heart.org/en/health-topics/consumer-healthcare/what-is-cardiovascular-disease/how-to-help-prevent-heart-disease-at-any-age', '_blank')">
+                    <div class="course-box neumorphic" onclick="window.open('https://www.heart.org/en/health-topics/consumer-healthcare/what-is-cardiovascular-disease/how-to-help-prevent-heart-disease-at-any-age', '_blank')">
                         <div class="box-image">
                             <img src="templates\static\images\2.jpg" alt="Heart Disease Prevention">
                         </div>
@@ -165,7 +181,7 @@
                             <p>Learn about preventing heart disease.</p>
                         </div>
                     </div>
-                    <div class="course-box" onclick="window.open('https://www.niddk.nih.gov/health-information/diabetes/overview/managing-diabetes', '_blank')">
+                    <div class="course-box neumorphic" onclick="window.open('https://www.niddk.nih.gov/health-information/diabetes/overview/managing-diabetes', '_blank')">
                         <div class="box-image">
                             <img src="templates\static\images\diabetes.jpg" alt="Diabetes Management">
                         </div>
@@ -174,7 +190,7 @@
                             <p>Learn how to manage your diabetes effectively.</p>
                         </div>
                     </div>
-                    <div class="course-box" onclick="window.open('https://www.parkinson.org/', '_blank')">
+                    <div class="course-box neumorphic" onclick="window.open('https://www.parkinson.org/', '_blank')">
                         <div class="box-image">
                             <img src="templates\static\images\4.jpg" alt="Living with Parkinson's">
                         </div>
@@ -184,6 +200,8 @@
                         </div>
                     </div>
                 </div>
+                <button class="slider-next">❯</button>
+                <div class="slider-pagination"></div>
             </div>
         </section>
 
@@ -192,8 +210,9 @@
         <section id="trending-diseases" class="section">
             <h2>Trending Diseases</h2>
             <div class="slider-container trending-slider">
+                <button class="slider-prev">❮</button>
                 <div class="slider-wrapper">
-                    <div class="disease-box" onclick="window.location='/charts/heart-attack'">
+                    <div class="disease-box neumorphic" onclick="window.location='/charts/heart-attack'">
                         <div class="box-image">
                             <img src="templates/static/images/8.jpg" alt="Heart Attack">
                         </div>
@@ -202,7 +221,7 @@
                             <p>Interactive visualization of heart attack likelihood by factors.</p>
                         </div>
                     </div>
-                    <div class="disease-box" onclick="window.location='/charts/cancer'">
+                    <div class="disease-box neumorphic" onclick="window.location='/charts/cancer'">
                         <div class="box-image">
                             <img src="templates/static/images/5.jpg" alt="Cancer">
                         </div>
@@ -211,7 +230,7 @@
                             <p>Learn about trends in cancer cases worldwide.</p>
                         </div>
                     </div>
-                    <div class="disease-box" onclick="window.location='/charts/breast-cancer'">
+                    <div class="disease-box neumorphic" onclick="window.location='/charts/breast-cancer'">
                         <div class="box-image">
                             <img src="templates/static/images/6.jpg" alt="Breast Cancer">
                         </div>
@@ -221,6 +240,8 @@
                         </div>
                     </div>
                 </div>
+                <button class="slider-next">❯</button>
+                <div class="slider-pagination"></div>
             </div>
         </section>
 
@@ -258,6 +279,11 @@
         
         {% block content %}{% endblock %}
     </main>
+
+   
+
+
+
     <footer class="footer">
         <div class="footer-links">
             <a href="/signup">Sign Up</a> |

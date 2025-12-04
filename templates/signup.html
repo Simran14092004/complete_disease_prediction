@@ -31,7 +31,6 @@
             background-color: #fff;
             padding: 2rem;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             width: 400px;
             max-width: 100%;
             display: flex;
@@ -65,6 +64,7 @@
             transition: background-color 0.3s ease;
             font-size: 1rem;
             color: white;
+            /* Removed box-shadow, now handled by .neumorphic */
         }
 
         .social-button i {
@@ -191,16 +191,16 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container neumorphic">
         <h2>Sign Up</h2>
         <div class="social-login">
-            <button class="social-button google">
+            <button class="social-button google neumorphic">
                 <i class="fab fa-google"></i> Sign up with Google
             </button>
-            <button class="social-button github">
+            <button class="social-button github neumorphic">
                 <i class="fab fa-github"></i> Sign up with GitHub
             </button>
-            <button class="social-button linkedin">
+            <button class="social-button linkedin neumorphic">
                 <i class="fab fa-linkedin"></i> Sign up with LinkedIn
             </button>
         </div>
@@ -222,7 +222,7 @@
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" placeholder="Your Password">
             </div>
-            <button type="submit" class="submit-button">Sign Up</button>
+            <button type="submit" class="submit-button neumorphic">Sign Up</button>
         </form>
         <div class="login-link">
             Already have an account? <a href="templates\login.html">Login</a>
@@ -242,7 +242,44 @@
         
         {% block content %}{% endblock %}
     </main>
-    <script src="templates/static/Depscript.js"></script>
+    <script>
+        document.querySelector('form').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('email', email);
+            formData.append('password', password);
+
+            try {
+                const response = await fetch('/signup', {
+                    method: 'POST',
+                    body: formData // Send as form data
+                });
+
+                // Assuming Flask flashes messages, which are handled by the template
+                // If you want to handle JSON responses, adjust main.py to return JSON
+                const text = await response.text(); // Read response as text to check for flashed messages
+
+                if (response.ok) {
+                    alert('Account created successfully! Please log in.');
+                    window.location.href = '/login'; // Redirect to login page
+                } else {
+                    // This part depends on how Flask sends error messages.
+                    // For now, we'll assume a simple alert if not redirected.
+                    alert('Signup failed. Please check your inputs.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred during signup.');
+            }
+        });
+    </script>
+    <script src="templates/static/script.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </body>
 </html>

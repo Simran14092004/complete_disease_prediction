@@ -1,3 +1,41 @@
+// JWT Token Handling
+function getAuthToken() {
+    return localStorage.getItem('access_token');
+}
+
+async function fetchWithAuth(url, options = {}) {
+    const token = getAuthToken();
+    const headers = {
+        ...options.headers,
+        'Authorization': `Bearer ${token}`
+    };
+    return fetch(url, { ...options, headers });
+}
+
+function checkAuthAndRenderUI() {
+    const token = getAuthToken();
+    if (token) {
+        console.log('User is authenticated. Token found.');
+        // Here you would typically decode the token to get user roles
+        // and then show/hide UI elements accordingly.
+        // For example, hide login/signup, show logout, show admin links.
+        // let decodedToken = parseJwt(token); // You would need a parseJwt function
+        // if (decodedToken.role === 'admin') { /* show admin elements */ }
+    } else {
+        console.log('User is not authenticated. No token found.');
+        // Show login/signup, hide logout, hide protected content
+    }
+}
+
+function logout() {
+    localStorage.removeItem('access_token');
+    alert('You have been logged out.');
+    window.location.href = '/login'; // Redirect to login page
+}
+
+// Ensure UI is rendered based on auth status on page load
+document.addEventListener('DOMContentLoaded', checkAuthAndRenderUI);
+
 // Toggle Menu Visibility
 const menuToggle = document.getElementById('menuToggle');
 const menuNav = document.getElementById('menuNav');
@@ -55,7 +93,7 @@ initializeSlider('.article-slider');
 initializeSlider('.course-slider');
 
 /**
- * Initializes a slider for the given selector. Supports autoplay, drag, and touch gestures.
+ * Initializes a slider for the given selector. Supports autoplay, drag, touch gestures, navigation buttons, and pagination.
  * @param {string} sliderSelector - The CSS selector for the slider container.
  */
 function initializeSlider(sliderSelector) {
@@ -64,14 +102,48 @@ function initializeSlider(sliderSelector) {
 
     const sliderWrapper = sliderContainer.querySelector('.slider-wrapper');
     const slides = Array.from(sliderWrapper.children);
+    const paginationContainer = sliderContainer.querySelector('.slider-pagination');
     let slideIndex = 0;
-    const slideWidth = slides[0].offsetWidth + 
-        (parseFloat(window.getComputedStyle(slides[0]).marginRight) || 0) + 
+    // Calculate slide width dynamically, including margins
+    const slideWidth = slides[0].offsetWidth +
+        (parseFloat(window.getComputedStyle(slides[0]).marginRight) || 0) +
         (parseFloat(window.getComputedStyle(slides[0]).marginLeft) || 0);
 
     let isDragging = false;
     let startPosition = 0;
     let currentPosition = 0;
+
+    // Create pagination dots
+    function createPaginationDots() {
+        if (!paginationContainer) return;
+        paginationContainer.innerHTML = ''; // Clear existing dots
+        for (let i = 0; i < slides.length; i++) {
+            const dot = document.createElement('span');
+            dot.classList.add('pagination-dot');
+            if (i === slideIndex) {
+                dot.classList.add('active');
+            }
+            dot.addEventListener('click', () => {
+                slideIndex = i;
+                updateSliderPosition();
+                updatePaginationDots();
+            });
+            paginationContainer.appendChild(dot);
+        }
+    }
+
+    // Update active pagination dot
+    function updatePaginationDots() {
+        if (!paginationContainer) return;
+        const dots = paginationContainer.querySelectorAll('.pagination-dot');
+        dots.forEach((dot, index) => {
+            if (index === slideIndex) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+    }
 
     function updateSliderPosition() {
         sliderWrapper.style.transform = `translateX(${-slideIndex * slideWidth}px)`;
@@ -80,11 +152,13 @@ function initializeSlider(sliderSelector) {
     function nextSlide() {
         slideIndex = (slideIndex + 1) % slides.length;
         updateSliderPosition();
+        updatePaginationDots(); // Update dots after slide
     }
 
     function prevSlide() {
         slideIndex = (slideIndex - 1 + slides.length) % slides.length;
         updateSliderPosition();
+        updatePaginationDots(); // Update dots after slide
     }
 
     function startDrag(event) {
@@ -112,6 +186,7 @@ function initializeSlider(sliderSelector) {
         }
         sliderWrapper.style.transition = 'transform 0.3s ease-out';
         updateSliderPosition();
+        updatePaginationDots(); // Update dots after drag
         currentPosition = -slideIndex * slideWidth;
     }
 
@@ -145,6 +220,10 @@ function initializeSlider(sliderSelector) {
     const prevButton = sliderContainer.querySelector('.slider-prev');
     if (nextButton) nextButton.addEventListener('click', nextSlide);
     if (prevButton) prevButton.addEventListener('click', prevSlide);
+
+    // Initial setup
+    createPaginationDots();
+    updateSliderPosition();
 }
 
 // Function to initialize charts dynamically based on user input
